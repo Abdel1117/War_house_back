@@ -4,7 +4,7 @@
   "description": "Back End of the idea_project site",
   "main": "index.js",
   "scripts": {
-    "test": "test",
+    "test": "jest",
     "dev": "nodemon --legacy-watch server.js"
   },
   "author": "Adjali Abderahmane",
@@ -16,5 +16,8 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.9.3",
     "nodemon": "^3.1.9"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
   }
 }

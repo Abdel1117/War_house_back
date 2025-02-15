@@ -1,0 +1,54 @@
+version: 2.1
+
+jobs:
+  install:
+    docker:
+      - image: cimg/node:18.18.0
+    working_directory: ~/war_house_back
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: npm install
+      - persist_to_workspace:
+          root: .
+          paths:
+            - node_modules
+
+  test:
+    docker:
+      - image: cimg/node:18.18.0
+    working_directory: ~/war_house_back
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - run:
+          name: Run tests
+          command: npm test
+
+  build:
+    docker:
+      - image: cimg/node:18.18.0
+    working_directory: ~/war_house_back
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - run:
+          name: Build project
+          command: npm run build
+
+  
+workflows:
+  version: 2
+  build_and_deploy:
+    jobs:
+      - install
+      - test:
+          requires:
+            - install
+      - build:
+          requires:
+            - test
+      
