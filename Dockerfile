@@ -1,5 +1,5 @@
 FROM node:bullseye
-WORKDIR /idea_project_back
+WORKDIR /war_house_back
 COPY package.json .
 RUN npm install 
 COPY . .

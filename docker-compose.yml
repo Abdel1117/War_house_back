@@ -1,0 +1,36 @@
+version: "3.8"
+services:
+  frontend:
+    build:
+      context: ../War_House_Front 
+    ports:
+      - "5173:5173" 
+    environment:
+      - VITE_API_URL=http://localhost:4000 
+    volumes:
+      - ../War_House_Front:/war_house_front 
+    container_name: war_house_frontend 
+
+  backend:
+    build:
+      context: . 
+    ports:
+      - "4000:4000"
+    environment:
+      - MONGO_URL=mongodb://mongo:27017 
+    depends_on:
+      - mongo
+    volumes:
+      - .:/war_house_back 
+    container_name: war_house_backend 
+
+  mongo:
+    image: mongo:latest 
+    ports:
+      - "27017:27017" 
+    volumes:
+      - mybd:/data/db
+    container_name: war_house_db 
+
+volumes:
+  mybd: 

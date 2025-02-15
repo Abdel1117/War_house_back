@@ -1,25 +1,26 @@
 const express = require('express');
+const mongoose = require('mongoose');
+const cors = require('cors');
+const userRoute = require('./routes/userRoute');
+require("dotenv").config();
+
 const app = express();
-const mongoose = require("mongoose");
+
+const FRONT_APP = process.env.FRONT_APP_URL || "http://localhost:3000";
 
 
+app.use(express.json());
 
-app.use(express.json())
-
-
-/* We handle the cors here */
-
-app.use(corse(corsOption))
-
+/* Gestion de CORS */
+app.use(cors("*"));
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', FRONT_URL);
+  res.header('Access-Control-Allow-Origin', FRONT_APP);
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
   next();
-})
-/* ENd of cors handling */
-app.get("/", (req, res, next) => {
-  res.send("Hello")
-})
+});
+
+app.use("/users", userRoute);
+
 
 module.exports = app;
