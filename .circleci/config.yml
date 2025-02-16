@@ -34,9 +34,6 @@ jobs:
       - run:
           name: Trigger CI/CD Pipeline After Successful Tests
           command: |
-            curl -X POST https://circleci.com/api/v2/project/gh/Abdel1117/war_house_ci/pipeline \
-            -H "Circle-Token: $CIRCLE_TOKEN" \
-              command: |
               if [ "$CIRCLE_BRANCH" = "dev" ]; then
                 curl -X POST https://circleci.com/api/v2/project/gh/Abdel1117/war_house_ci/pipeline \
                 -H "Circle-Token: $CIRCLE_TOKEN" \
@@ -65,5 +62,5 @@ workflows:
             branches:
               only:
                 - dev
-                - main
+                - prod
      
