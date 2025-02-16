@@ -49,24 +49,6 @@ jobs:
                 -d '{"branch": "prod"}'
               fi
 
-  build_and_deploy:
-    docker:
-      - image: cimg/base:stable
-    steps:
-      - checkout
-      - run:
-          name: Clone Front and Back Repos
-          command: |
-            git clone https://github.com/Abdel1117/War-house.git ../War_House_Front
-            git clone https://github.com/Abdel1117/War_house_back.git ../War_House_Back
-      - run:
-          name: Build Docker Images
-          command: |
-            docker-compose -f ../War_House_Back/docker-compose.yml build
-      - run:
-          name: Deploy Services
-          command: |
-            docker-compose -f ../War_House_Back/docker-compose.yml up -d
 
 workflows:
   version: 2
@@ -84,9 +66,4 @@ workflows:
               only:
                 - dev
                 - main
-      - build_and_deploy:
-          requires:
-            - trigger_ci_cd
-          filters:
-            branches:
-              only: main
+     
