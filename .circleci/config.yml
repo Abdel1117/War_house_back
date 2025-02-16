@@ -27,18 +27,6 @@ jobs:
           name: Run tests
           command: npm test
 
-  build:
-    docker:
-      - image: cimg/node:18.18.0
-    working_directory: ~/war_house_back
-    steps:
-      - checkout
-      - attach_workspace:
-          at: .
-      - run:
-          name: Build project
-          command: npm run build
-
   
 workflows:
   version: 2
@@ -48,7 +36,3 @@ workflows:
       - test:
           requires:
             - install
-      - build:
-          requires:
-            - test
-      
