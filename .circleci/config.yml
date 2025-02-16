@@ -26,23 +26,57 @@ jobs:
       - run:
           name: Run tests
           command: npm test
+
+  trigger_ci_cd:
+    docker:
+      - image: cimg/base:stable
+    steps:
       - run:
           name: Trigger CI/CD Pipeline After Successful Tests
           command: |
-            if [ "$CIRCLE_BRANCH" == "dev" ] || [ "$CIRCLE_BRANCH" == "main" ]; then
-              if [ "$CIRCLE_JOB" == "test" ] && [ "$CIRCLE_TEST_EXIT_CODE" == "0" ]; then
-                curl -X POST https://circleci.com/api/v2/project/gh/user/ci-cd-repo/pipeline \
-                -H "Circle-Token: $CIRCLE_TOKEN" \
-                -H "Content-Type: application/json" \
-                -d '{"branch": "$CIRCLE_BRANCH"}'
-              fi
-            fi
+            curl -X POST https://circleci.com/api/v2/project/gh/user/ci-cd-repo/pipeline \
+            -H "Circle-Token: $CIRCLE_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d '{"branch": "$CIRCLE_BRANCH"}'
+
+  build_and_deploy:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - checkout
+      - run:
+          name: Clone Front and Back Repos
+          command: |
+            git clone https://github.com/Abdel1117/War-house.git ../War_House_Front
+            git clone https://github.com/Abdel1117/War_house_back.git ../War_House_Back
+      - run:
+          name: Build Docker Images
+          command: |
+            docker-compose -f ../War_House_Back/docker-compose.yml build
+      - run:
+          name: Deploy Services
+          command: |
+            docker-compose -f ../War_House_Back/docker-compose.yml up -d
 
 workflows:
   version: 2
-  build_and_deploy:
+  ci_cd_pipeline:
     jobs:
       - install
       - test:
           requires:
             - install
+      - trigger_ci_cd:
+          requires:
+            - test
+          filters:
+            branches:
+              only:
+                - dev
+                - main
+      - build_and_deploy:
+          requires:
+            - trigger_ci_cd
+          filters:
+            branches:
+              only: main
