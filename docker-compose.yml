@@ -11,11 +11,7 @@ services:
       - ../War_House_Front:/war_house_front
       - /war_house_front/node_modules
     container_name: war_house_frontend
-    deploy:
-      resources:
-        limits:
-          cpus: "0.5"       # Limite le CPU à 50% d'un cœur
-          memory: "300M"    # Limite la mémoire à 300MB
+    
 
   backend:
     build:
@@ -29,11 +25,7 @@ services:
     volumes:
       - .:/war_house_back 
     container_name: war_house_backend
-    deploy:
-      resources:
-        limits:
-          cpus: "0.7"       # Limite le CPU à 70% d'un cœur
-          memory: "400M"    # Limite la mémoire à 400MB
+    
 
   mongo:
     image: mongo:latest 
@@ -42,11 +34,7 @@ services:
     volumes:
       - mybd:/data/db
     container_name: war_house_db
-    deploy:
-      resources:
-        limits:
-          cpus: "0.3"       # Mongo ne doit pas prendre tout le CPU
-          memory: "250M"    # Limite MongoDB à 250MB de RAM
+   
 
 volumes:
   mybd:
