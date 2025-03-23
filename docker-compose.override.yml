@@ -9,7 +9,9 @@ services:
       - "5173:5173" 
     environment:
       - VITE_API_URL=http://localhost:4000 
-    
+    volumes:
+      - ../War_House_Front:/war_house_front
+      - /war_house_front/node_modules
     container_name: war_house_frontend
     
 
