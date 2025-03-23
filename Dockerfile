@@ -23,7 +23,7 @@ EXPOSE $PORT_APP
 
 # Start logic (dev vs prod)
 CMD if [ "$ENV" = "prod" ]; then \
-    pm2-runtime start server.js --name war_house_back; \
+    ./node_modules/.bin/pm2-runtime start server.js --name war_house_back; \
     else \
     npm run dev; \
     fi
