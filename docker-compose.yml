@@ -16,10 +16,16 @@ services:
   backend:
     build:
       context: . 
+      args : 
+        - ENV=${ENV}
+        - PORT_APP=${PORT_APP}
+        - MONGO_URL=${MONGO_URL}
     ports:
       - "4000:4000"
     environment:
       - MONGO_URL=${MONGO_URL}
+      - PORT_APP=${PORT_APP}
+      - ENV=${ENV}
     depends_on:
       - mongo
     volumes:
