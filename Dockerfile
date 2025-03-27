@@ -1,27 +1,27 @@
-FROM node:bullseye
+FROM node:18
 
 WORKDIR /war_house_back
 
-COPY package.json package-lock.json ./
+# Copie les dépendances
+COPY package*.json ./
 
-# Install PM2 globally
-RUN npm install -g pm2
+# Installe TOUT (pm2, dotenv, etc.) en LOCAL
+RUN npm install && npm install -g pm2
 
-# Install app dependencies
-RUN npm install
-
-# Copy the rest of the code
+# Copie le reste
 COPY . .
 
+# Env vars
 ARG ENV
 ARG PORT_APP
+ARG MONGO_URL
+ARG FRONT_APP_URL
+ARG DB_USER
+ARG DB_PASS
+ARG DB_PORT
 ENV ENV=$ENV
 ENV PORT_APP=$PORT_APP
 
 EXPOSE $PORT_APP
 
-CMD if [ "$ENV" = "prod" ]; then \
-    pm2-runtime start server.js --name war_house_back; \
-    else \
-    npm run dev; \
-    fi
+CMD ["pm2-runtime", "server.js"]
