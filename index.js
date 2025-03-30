@@ -5,8 +5,8 @@ const userRoute = require('./routes/userRoute');
 require("dotenv").config();
 
 const app = express();
-
-const FRONT_APP = process.env.FRONT_APP_URL || "http://localhost:3000";
+const FRONT_APP = process.env.FRONT_APP_URL || "http://localhost:5173";
+console.log(FRONT_APP)
 
 
 app.use(express.json());

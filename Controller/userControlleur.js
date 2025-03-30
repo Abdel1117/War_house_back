@@ -7,6 +7,7 @@ exports.getAllUsers =  (req, res) => {
     try {
        User.find()
         .then(users => {
+            console.log(users)
             res.status(200).json(users);
         })
         .catch(error => {
