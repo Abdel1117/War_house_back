@@ -21,6 +21,9 @@ app.use((req, res, next) => {
 });
 
 app.use("/users", userRoute);
-
+app.use("/", (req, res) => {
+  res.send("API is running");
+  console.log("API is running")
+});
 
 module.exports = app;
