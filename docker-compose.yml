@@ -30,6 +30,7 @@ services:
       - DB_USER=${DB_USER}
       - DB_PASS=${DB_PASS}
       - DB_PORT=${DB_PORT}
+      - FRONT_APP_URL=${FRONT_APP_URL}
 
     depends_on:
       - mongo
