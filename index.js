@@ -1,6 +1,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+
+const signUpRoute = require('./routes/signUp');
 const userRoute = require('./routes/userRoute');
 require("dotenv").config();
 
@@ -21,9 +23,13 @@ app.use((req, res, next) => {
 });
 
 app.use("/users", userRoute);
-app.use("/", (req, res) => {
+app.use("/signUp", signUpRoute);
+
+
+app.use("/", (req, res, next) => {
   res.send("API is running");
-  console.log("API is running")
+  console.log("API is running");
+  next();
 });
 
 module.exports = app;

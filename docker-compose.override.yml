@@ -40,4 +40,6 @@ services:
 
 volumes:
   mybd:
+    labels: 
+      keep: "true"
 

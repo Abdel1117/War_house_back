@@ -6,7 +6,7 @@ WORKDIR /war_house_back
 COPY package*.json ./
 
 # Installe TOUT (pm2, dotenv, etc.) en LOCAL
-RUN npm install && npm install -g pm2
+RUN npm install && npm install nodemon && npm install -g pm2
 
 # Copie le reste
 COPY . .
@@ -28,4 +28,8 @@ ENV DB_PASS=${DB_PASS}
 ENV DB_PORT=${DB_PORT}
 EXPOSE $PORT_APP
 
-CMD ["pm2-runtime", "server.js"]
+CMD if ["$ENV" = "prod" ]; then \ 
+    pm2-runtime server.js; \
+    else \
+    npm run dev; \
+    fi

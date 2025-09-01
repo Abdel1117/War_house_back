@@ -8,7 +8,7 @@ async function connectToDatabase() {
   try{
 
     mongoose.set('strictQuery', true);
-    mongoose.connect(`${process.env.MONGO_URL}`)
+    mongoose.connect(`${process.env.MONGO_URL}`,{dbName: process.env.MONGO_DB})
     .then(() => { console.log("Connexion à la base de donnée réussi") })
     .catch(err => console.log(err))
   }
