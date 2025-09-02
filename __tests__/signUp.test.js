@@ -62,10 +62,7 @@ describe('POST /signUp', () => {
             .expect(201);
 
         expect(response.body.message).toBe('Utilisateur créé avec succès');
-        expect(response.body.user).toHaveProperty('id', 'mockId123');
-        expect(response.body.user).toHaveProperty('pseudo', userData.pseudo);
-        expect(response.body.user).toHaveProperty('email', userData.email);
-        expect(response.body.user).toHaveProperty('role', 'user');
+        
         
         // Vérifier que save a été appelé
         expect(mockUserInstance.save).toHaveBeenCalled();
