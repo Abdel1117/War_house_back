@@ -1,9 +1,12 @@
 require("dotenv").config();
-const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const { validationResult } = require('express-validator');
 const User = require("../Model/userModel.js");
-const mongoose = require("mongoose");
+const {
+    generateAccessToken,
+    generateRefreshToken,
+    getRefreshTokenExpiry
+} = require("../Utils/tokenUtils.js");
 
 exports.signUp = async (req, res) => {
   const errors = validationResult(req);
@@ -29,14 +32,7 @@ exports.signUp = async (req, res) => {
     const saltRounds = 12;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
     
-    // Générer un refreshToken
-    const refreshToken = jwt.sign(
-      { pseudo, email }, 
-      process.env.JWT_SECRET || 'default_secret', 
-      { expiresIn: '7d' }
-    );
-
-    // Créer l'utilisateur
+    // Créer l'utilisateur sans tokens initialement
     const user = new User({ 
       pseudo, 
       firstName, 
@@ -46,20 +42,17 @@ exports.signUp = async (req, res) => {
       birthDate, 
       country, 
       city,
-      acceptPrivacyPolicy: acceptPrivacyPolicy || false,
-      refreshToken
+      hasAcceptedTerms: acceptPrivacyPolicy || false,
+      refreshTokens: [],
+      tokenVersion: 0
     });
     
     await user.save();
+
     
     res.status(201).json({ 
       message: "Utilisateur créé avec succès",
-      user: {
-        id: user._id,
-        pseudo: user.pseudo,
-        email: user.email,
-        role: user.role
-      }
+   
     });
   } catch (error) {
     console.error("Erreur lors de l'inscription:", error);

@@ -10,11 +10,19 @@ const user = mongoose.Schema({
     birthDate : {type :Date, required :true},
     country : {type : String, required:  true},
     city : {type : String, required:  true},
-    acceptPrivacyPolicy: { type: Boolean, default: false },
-    refreshToken: { type: String, required: false }
+    hasAcceptedTerms: { type: Boolean, default: false },
+    refreshTokens: [{ 
+        token: { type: String, required: true },
+        createdAt: { type: Date, default: Date.now },
+        expiresAt: { type: Date, required: true },
+        isActive: { type: Boolean, default: true }
+    }],
+    tokenVersion: { type: Number, default: 0 } // Pour invalider tous les tokens
 }, {
     timestamps: true
 });
 
+// Index pour nettoyer automatiquement les tokens expirés
+user.index({ "refreshTokens.expiresAt": 1 }, { expireAfterSeconds: 0 });
 
-module.exports = mongoose.model('User', user);
+module.exports = mongoose.model('User', user)
