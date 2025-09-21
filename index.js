@@ -6,6 +6,7 @@ const cors = require('cors');
 const signUpRoute = require('./routes/signUp');
 const userRoute = require('./routes/userRoute');
 const authRoute = require('./routes/auth');
+const imageRoute = require('./routes/imageRoute');
 require("dotenv").config();
 
 const app = express();
@@ -27,6 +28,7 @@ app.use((req, res, next) => {
 app.use("/users", userRoute);
 app.use("/signUp", signUpRoute);
 app.use("/auth", authRoute);
+app.use("/images", imageRoute);
 
 
 

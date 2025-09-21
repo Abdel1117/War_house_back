@@ -60,7 +60,8 @@ exports.login = async (req, res) => {
                 id: user._id,
                 pseudo: user.pseudo,
                 email: user.email,
-                role: user.role
+                role: user.role,
+                birthDate: user.birthDate
             }
         });
 

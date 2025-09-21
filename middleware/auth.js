@@ -16,9 +16,7 @@ exports.authenticateToken = async (req, res, next) => {
 
         // Vérifier le token
         const decoded = verifyAccessToken(token);
-        console.log("==========================")
-        console.log(decoded.userId)
-        console.log("==========================")
+      
         // Récupérer l'utilisateur
         const user = await User.findById(decoded.userId).select('-password -refreshTokens');
         console.log(user)
